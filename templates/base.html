@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ .Title }}</title>
+        {{ range .Stylesheets }}
+        <link rel="stylesheet" type="text/css" href="{{.}}" />
+        {{ end }}
+    </head>
+    <body>
+        {{ .Data.test }}
+    </body>
+</html>
