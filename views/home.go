@@ -16,7 +16,10 @@ func Home(w http.ResponseWriter, r *http.Request) {
         },
     }
 
-    template, _ := template.ParseFiles("templates/base.html")
+    template, _ := template.ParseFiles(
+        "templates/base.html",
+        "templates/home.html",
+    )
 
     template.Execute(w, home_page)
 }
