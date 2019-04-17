@@ -49,6 +49,7 @@ h1{
 }
 
 .btn{
+  font-family: 'Open Sans', sans-serif;
   background:#2ecc71;
   width:125px;
   padding-top:5px;

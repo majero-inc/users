@@ -47,3 +47,43 @@ func PrintUsers() {
 	}
 	fmt.Print("\n\n")
 }
+
+func ValidateUser(user string, pass string) bool {
+	fmt.Print("Go connecting to database\n\n")
+
+	db, err := sql.Open("mysql", "Maedz:test@tcp(127.0.0.1:3306)/demo")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer db.Close()
+
+	fmt.Print("Successfully connected to MySQL database\n\n")
+
+	s := fmt.Sprintf("SELECT * FROM USERS WHERE username='%s' AND password='%s'", user, pass)
+	results, err := db.Query(s)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer results.Close()
+
+	if results.Next() {
+		var user USER
+		err = results.Scan(&user.username, &user.password, &user.userID, &user.groupID)
+		if err != nil {
+			fmt.Print("Did Not Find User (0)")
+			return false
+		} else {
+			fmt.Print("Did Find User")
+			fmt.Print(user)
+			return true
+		}
+
+	} else {
+		fmt.Print("Did Not Find User (1)")
+		return false
+	}
+}
