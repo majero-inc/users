@@ -3,6 +3,7 @@ package views
 import (
     "html/template"
     "net/http"
+    "fmt"
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
@@ -16,10 +17,18 @@ func Home(w http.ResponseWriter, r *http.Request) {
         },
     }
 
-    template, _ := template.ParseFiles(
+    template, err := template.ParseFiles(
         "templates/base.html",
         "templates/home.html",
+        "templates/header.html",
     )
+
+    if err != nil {
+      fmt.Println("Error Parsing File (home)")
+      w.WriteHeader(http.StatusInternalServerError)
+      w.Write([]byte("500 - Something bad happened!"))
+      return;
+    }
 
     template.Execute(w, home_page)
 }

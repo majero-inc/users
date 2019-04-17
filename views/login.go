@@ -3,6 +3,7 @@ package views
 import (
     "html/template"
     "net/http"
+    "fmt"
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
@@ -17,10 +18,16 @@ func Login(w http.ResponseWriter, r *http.Request) {
         },
     }
 
-    template, _ := template.ParseFiles(
+    template, err := template.ParseFiles(
         "templates/base.html",
         "templates/login.html",
+        "templates/header.html",
     )
+
+    if err != nil {
+      fmt.Println("Error Parsing File (login)")
+      http.Redirect(w, r, "http://localhost:8080/home", http.StatusSeeOther)
+    }
 
     template.Execute(w, login_page)
 }
