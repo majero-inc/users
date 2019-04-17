@@ -14,7 +14,7 @@ type USER struct { //USER struct that needs to be used to extract information fr
 	groupID  sql.NullInt64
 }
 
-func mysql() {
+func PrintUsers() {
 	fmt.Print("Go connecting to database\n\n")
 
 	db, err := sql.Open("mysql", "Maedz:test@tcp(127.0.0.1:3306)/demo")
