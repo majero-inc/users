@@ -38,7 +38,7 @@ func getLogin(w http.ResponseWriter, r *http.Request) {
 
 		if err != nil {
 			fmt.Println("Error Parsing File (login)")
-			http.Redirect(w, r, "http://localhost:8080/home", http.StatusSeeOther)
+			http.Redirect(w, r, "/home", http.StatusSeeOther)
 		}
 
 		template.Execute(w, loginPage)
@@ -59,10 +59,10 @@ func attemptLogin(w http.ResponseWriter, r *http.Request) {
 		fmt.Print("\n\n Login Successful\n\n")
 		session.Values["authenticated"] = true
 		session.Save(r, w)
-		http.Redirect(w, r, "http://localhost:8080/home", http.StatusSeeOther)
+		http.Redirect(w, r, "/home", http.StatusSeeOther)
 	} else {
 		fmt.Print("\n\n Login Not Successful\n\n")
-		http.Redirect(w, r, "http://localhost:8080/login", http.StatusSeeOther)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
 }
 

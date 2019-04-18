@@ -28,7 +28,7 @@ func getRegister(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		fmt.Println("Error Parsing File (register)")
-		http.Redirect(w, r, "http://localhost:8080/home", http.StatusSeeOther)
+		http.Redirect(w, r, "/home", http.StatusSeeOther)
 	}
 
 	template.Execute(w, registerPage)
@@ -41,10 +41,10 @@ func registerUser(w http.ResponseWriter, r *http.Request) {
 
 	if db.CreateUser(r.PostForm.Get("email"), r.PostForm.Get("password")) {
 		fmt.Print("\n\n Successfully created user\n\n")
-		http.Redirect(w, r, "http://localhost:8080/home", http.StatusSeeOther)
+		http.Redirect(w, r, "/home", http.StatusSeeOther)
 	} else {
 		fmt.Print("\n\n User was not created \n\n")
-		http.Redirect(w, r, "http://localhost:8080/register", http.StatusSeeOther)
+		http.Redirect(w, r, "/register", http.StatusSeeOther)
 	}
 }
 
