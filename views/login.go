@@ -5,33 +5,50 @@ import (
 	"html/template"
 	"net/http"
 
+	"github.com/gorilla/sessions"
 	"github.com/majero-inc/users/modules/db"
 )
 
+var (
+	// key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
+	key   = []byte("super-secret-key")
+	store = sessions.NewCookieStore(key)
+)
+
 func getLogin(w http.ResponseWriter, r *http.Request) {
-	loginPage := Page{
-		Title: "Login Page",
-		Stylesheets: []string{
-			"/public/css/base.css",
-			"/public/css/login.css",
-		},
-		Data: map[string]string{
-			"test": "",
-		},
+	session, _ := store.Get(r, "cookie-name")
+	// Check if user is authenticated
+	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+		loginPage := Page{
+			Title: "Login Page",
+			Stylesheets: []string{
+				"/public/css/base.css",
+				"/public/css/login.css",
+			},
+			Data: map[string]string{
+				"test": "",
+			},
+		}
+
+		template, err := template.ParseFiles(
+			"templates/base.html",
+			"templates/login.html",
+			"templates/header.html",
+		)
+
+		if err != nil {
+			fmt.Println("Error Parsing File (login)")
+			http.Redirect(w, r, "http://localhost:8080/home", http.StatusSeeOther)
+		}
+
+		session.Values["authenticated"] = true
+		session.Save(r, w)
+
+		template.Execute(w, loginPage)
+	} else {
+		http.Error(w, "Already logged in", http.StatusForbidden)
+		return
 	}
-
-	template, err := template.ParseFiles(
-		"templates/base.html",
-		"templates/login.html",
-		"templates/header.html",
-	)
-
-	if err != nil {
-		fmt.Println("Error Parsing File (login)")
-		http.Redirect(w, r, "http://localhost:8080/home", http.StatusSeeOther)
-	}
-
-	template.Execute(w, loginPage)
 }
 
 func attemptLogin(w http.ResponseWriter, r *http.Request) {
