@@ -87,3 +87,37 @@ func ValidateUser(user string, pass string) bool {
 		return false
 	}
 }
+
+func CreateUser(user string, pass string) bool {
+	fmt.Print("Go connecting to database\n\n")
+	db, err := sql.Open("mysql", "Maedz:test@tcp(127.0.0.1:3306)/demo")
+
+	if err != nil {
+		panic(err.Error())
+	}
+	defer db.Close()
+
+	fmt.Print("Successfully connected to MySQL database\n\n")
+
+	selectQuery := fmt.Sprintf("SELECT * FROM USERS WHERE username='%s'", user)
+	results, err := db.Query(selectQuery)
+
+	if err != nil {
+		panic(err.Error())
+	}
+	defer results.Close()
+
+	if results.Next() {
+		fmt.Print("User already exists")
+		return false
+	} else {
+		fmt.Print("Did Not Find User, adding into database")
+		insertQuery := fmt.Sprintf("insert into users (username,password) values ('%s','%s');",user, pass)
+		insertResults, err := db.Query(insertQuery)
+		if err != nil {
+			panic(err.Error())
+		}
+		defer insertResults.Close()
+		return true
+	}
+}

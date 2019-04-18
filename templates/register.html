@@ -1,0 +1,17 @@
+{{ define "content" }}
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:700,600' rel='stylesheet' type='text/css'>
+<form method="post" action="/register">
+    <div class="box">
+    <h1>Sign Up</h1>
+    
+    <input type="email" name="email" value="email" onFocus="field_focus(this, 'email');" onblur="field_blur(this, 'email');" class="email" />
+    
+    <input type="password" name="password" value="password" onFocus="field_focus(this, 'password');" onblur="field_blur(this, 'password');" class="email" />
+    
+    <input type="submit" class="btn" value="Sign Up"/> <!-- End Btn -->
+    
+    </div> <!-- End Box -->
+    
+</form>
+
+{{ end }}

@@ -8,9 +8,9 @@ import (
 	"github.com/majero-inc/users/modules/db"
 )
 
-func getLogin(w http.ResponseWriter, r *http.Request) {
-	loginPage := Page{
-		Title: "Login Page",
+func getRegister(w http.ResponseWriter, r *http.Request) {
+	registerPage := Page{
+		Title: "Register Page",
 		Stylesheets: []string{
 			"/public/css/base.css",
 			"/public/css/login.css",
@@ -22,39 +22,39 @@ func getLogin(w http.ResponseWriter, r *http.Request) {
 
 	template, err := template.ParseFiles(
 		"templates/base.html",
-		"templates/login.html",
+		"templates/register.html",
 		"templates/header.html",
 	)
 
 	if err != nil {
-		fmt.Println("Error Parsing File (login)")
+		fmt.Println("Error Parsing File (register)")
 		http.Redirect(w, r, "http://localhost:8080/home", http.StatusSeeOther)
 	}
 
-	template.Execute(w, loginPage)
+	template.Execute(w, registerPage)
 }
 
-func attemptLogin(w http.ResponseWriter, r *http.Request) {
+func registerUser(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	fmt.Println(r.PostForm.Get("email"))
 	fmt.Println(r.PostForm.Get("password"))
 
-	if db.ValidateUser(r.PostForm.Get("email"), r.PostForm.Get("password")) {
-		fmt.Print("\n\n Login Successful\n\n")
+	if db.CreateUser(r.PostForm.Get("email"), r.PostForm.Get("password")) {
+		fmt.Print("\n\n Successfully created user\n\n")
 		http.Redirect(w, r, "http://localhost:8080/home", http.StatusSeeOther)
 	} else {
-		fmt.Print("\n\n Login Not Successful\n\n")
-		http.Redirect(w, r, "http://localhost:8080/login", http.StatusSeeOther)
+		fmt.Print("\n\n User was not created \n\n")
+		http.Redirect(w, r, "http://localhost:8080/register", http.StatusSeeOther)
 	}
 }
 
-func Login(w http.ResponseWriter, r *http.Request) {
+func Register(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		getLogin(w, r)
+		getRegister(w, r)
 		break
 	case "POST":
-		attemptLogin(w, r)
+		registerUser(w, r)
 		break
 	default:
 	}
