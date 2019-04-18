@@ -41,9 +41,6 @@ func getLogin(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "http://localhost:8080/home", http.StatusSeeOther)
 		}
 
-		session.Values["authenticated"] = true
-		session.Save(r, w)
-
 		template.Execute(w, loginPage)
 	} else {
 		http.Error(w, "Already logged in", http.StatusForbidden)
@@ -57,7 +54,11 @@ func attemptLogin(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.PostForm.Get("password"))
 
 	if db.ValidateUser(r.PostForm.Get("email"), r.PostForm.Get("password")) {
+		session, _ := store.Get(r, "cookie-name")
+
 		fmt.Print("\n\n Login Successful\n\n")
+		session.Values["authenticated"] = true
+		session.Save(r, w)
 		http.Redirect(w, r, "http://localhost:8080/home", http.StatusSeeOther)
 	} else {
 		fmt.Print("\n\n Login Not Successful\n\n")
