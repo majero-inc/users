@@ -43,7 +43,7 @@ func PrintUsers() {
 			panic(err.Error())
 		}
 
-		fmt.Print(user)
+		fmt.Println(user)
 	}
 	fmt.Print("\n\n")
 }
@@ -108,10 +108,10 @@ func CreateUser(user string, pass string) bool {
 	defer results.Close()
 
 	if results.Next() {
-		fmt.Print("User already exists")
+		fmt.Println("User already exists")
 		return false
 	} else {
-		fmt.Print("Did Not Find User, adding into database")
+		fmt.Println("Did Not Find User, adding into database")
 		insertQuery := fmt.Sprintf("insert into users (username,password) values ('%s','%s');",user, pass)
 		insertResults, err := db.Query(insertQuery)
 		if err != nil {

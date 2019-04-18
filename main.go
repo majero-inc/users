@@ -24,14 +24,38 @@ func printCLIHelper() {
 func mainloop() {
 	x := " "
 	a := 1
+	xList := []string{""}
 	reader := bufio.NewReader(os.Stdin)
 	printCLIHelper()
 
 	for a > 0 {
 		fmt.Print("Enter text: ")
 		x, _ = reader.ReadString('\n')
-		switch strings.TrimRight(x, "\n") {
-		case "mysql":
+		xList = strings.Split(strings.TrimRight(x, "\n"), " ")
+		switch xList[0] {
+		case "mysql-addDummy", "mysql-d":
+				if db.CreateUser("test@test.com", "test") {
+					fmt.Println("username: test@test.com, password: test. was added to the database\n")
+				} else {
+					fmt.Println("username: test@test.com, password: test. Already exist in the database\n")
+				}
+			break
+		case "mysql-add", "mysql-a":
+			if db.CreateUser(xList[1], xList[2]) {
+				fmt.Println(fmt.Sprintf("username=%s, passaword=%s was added\n", xList[1], xList[2]))
+			} else {
+				fmt.Println(fmt.Sprintf("username=%s, passaword=%s already exists\n", xList[1], xList[2]))
+			}				
+			break
+		case "mysql-help", "mysql-h", "mysql":
+			fmt.Println("========================")
+			fmt.Println("'mysql-help'    | 'mysql-h'  to get this text")
+			fmt.Println("'mysql-addDummy'| 'mysql-d'  to add dummy object to database (test@test.com, test)")
+			fmt.Println("'mysql-add'     | 'mysql-a'  [username] [password] to add user to database")
+			fmt.Println("'mysql-print'   | 'mysql-p'  to print database")
+			fmt.Println("========================\n")
+			break
+		case "mysql-print", "mysql-p":
 			db.PrintUsers()
 			break
 		case "quit", "q":
