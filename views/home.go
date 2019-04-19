@@ -22,8 +22,8 @@ func Home(w http.ResponseWriter, r *http.Request) {
 		Stylesheets: []string{
 			"/public/css/base.css",
 		},
-		Data: map[string]string{
-			"test": "Home Page.",
+		Data: map[string][]string{
+			"test": []string{"Home Page."},
 		},
 		IsLoggedIn: isLoggedIn,
 	}

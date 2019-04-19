@@ -1,0 +1,9 @@
+{{ define "content" }}
+{{ range .Data.content }}{{ . }}{{ end }}
+<p>
+    <b>Users:</b>
+    <ul>
+        {{ range .Data.users }}<li>{{ . }}</li>{{ end }}
+    </ul>
+</p>
+{{ end }}

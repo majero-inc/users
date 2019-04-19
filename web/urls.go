@@ -12,4 +12,5 @@ func Urls() {
 	http.HandleFunc("/login", views.Login)
 	http.HandleFunc("/register", views.Register)
 	http.HandleFunc("/logout", views.Logout)
+	http.HandleFunc("/sqlite", views.Sqlite)
 }

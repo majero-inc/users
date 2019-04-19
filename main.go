@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/majero-inc/users/modules/db"
+	"github.com/majero-inc/users/modules/db/sqlite"
 
 	"github.com/majero-inc/users/web"
 
@@ -45,7 +46,7 @@ func mainloop() {
 				fmt.Println(fmt.Sprintf("username=%s, passaword=%s was added\n", xList[1], xList[2]))
 			} else {
 				fmt.Println(fmt.Sprintf("username=%s, passaword=%s already exists\n", xList[1], xList[2]))
-			}				
+			}
 			break
 		case "mysql-help", "mysql-h", "mysql":
 			fmt.Println("========================")
@@ -58,6 +59,8 @@ func mainloop() {
 		case "mysql-print", "mysql-p":
 			db.PrintUsers()
 			break
+        case "sqlite-add":
+            sqlite.AddUser(xList[1], xList[2])
 		case "quit", "q":
 			a = 0
 			break

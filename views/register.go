@@ -15,9 +15,6 @@ func getRegister(w http.ResponseWriter, r *http.Request) {
 			"/public/css/base.css",
 			"/public/css/login.css",
 		},
-		Data: map[string]string{
-			"test": "",
-		},
 	}
 
 	template, err := template.ParseFiles(
