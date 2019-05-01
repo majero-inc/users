@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/sessions"
-	"github.com/majero-inc/users/modules/db"
+	"github.com/majero-inc/users/modules/db/sqlite"
 )
 
 var (
@@ -47,14 +47,13 @@ func getLogin(w http.ResponseWriter, r *http.Request) {
 
 func attemptLogin(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	fmt.Println(r.PostForm.Get("email"))
-	fmt.Println(r.PostForm.Get("password"))
-
-	if db.ValidateUser(r.PostForm.Get("email"), r.PostForm.Get("password")) {
+	result, name := sqlite.UserAttemptLogin(r.PostForm.Get("email"), r.PostForm.Get("password"))
+	if result {
 		session, _ := store.Get(r, "cookie-name")
 
 		fmt.Print("\n\n Login Successful\n\n")
 		session.Values["authenticated"] = true
+		session.Values["Name"] = name
 		session.Save(r, w)
 		http.Redirect(w, r, "/home", http.StatusSeeOther)
 	} else {

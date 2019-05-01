@@ -1,11 +1,11 @@
 package views
 
 import (
-	"log"
 	"html/template"
+	"log"
 	"net/http"
 
-    "github.com/majero-inc/users/modules/db/sqlite"
+	"github.com/majero-inc/users/modules/db/sqlite"
 )
 
 func Sqlite(w http.ResponseWriter, r *http.Request) {
@@ -20,12 +20,12 @@ func Sqlite(w http.ResponseWriter, r *http.Request) {
 		IsLoggedIn: false,
 	}
 
-    users := sqlite.Users()
-    if users != nil {
-        for _, user := range users {
-            sqlite_page.Data["users"] = append(sqlite_page.Data["users"], user.FirstName + " " + user.LastName)
-        }
-    }
+	users := sqlite.Users()
+	if users != nil {
+		for _, user := range users {
+			sqlite_page.Data["users"] = append(sqlite_page.Data["users"], user.FirstName+" "+user.LastName)
+		}
+	}
 
 	templates, err := template.ParseFiles(
 		"templates/base.html",
@@ -33,7 +33,7 @@ func Sqlite(w http.ResponseWriter, r *http.Request) {
 		"templates/sqlite.html",
 	)
 	if err != nil {
-        log.Fatal(err)
+		log.Fatal(err)
 	}
 
 	templates.Execute(w, sqlite_page)

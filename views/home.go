@@ -26,6 +26,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 			"test": []string{"Home Page."},
 		},
 		IsLoggedIn: isLoggedIn,
+		User: session.Values["Name"].(string),
 	}
 
 	template, err := template.ParseFiles(

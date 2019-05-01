@@ -5,4 +5,5 @@ type Page struct {
 	Stylesheets []string
 	Data        map[string][]string
 	IsLoggedIn  bool
+	User        string
 }
